@@ -1,5 +1,6 @@
 # This project is retired, archived, and no longer supported. You are welcome to continue to use and fork the repository.
 
+[![Build Status](https://dev.azure.com/CityofSurreyTraining/Tailspin-NZ1/_apis/build/status/nancyzhang-it.ContosoAir?branchName=master)](https://dev.azure.com/CityofSurreyTraining/Tailspin-NZ1/_build/latest?definitionId=40&branchName=master)
 
 # Microsoft.Github CI Demo
 
