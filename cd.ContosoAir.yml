@@ -12,8 +12,8 @@ resources:
       source: nz1.ContosoAir # name of the pipeline that produces an artifact
       trigger:
         branches:
-          include:
-            - master
+         include:
+           - master
 
 pool:
   vmImage: ubuntu-latest
