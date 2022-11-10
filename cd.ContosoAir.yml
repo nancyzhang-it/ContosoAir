@@ -12,7 +12,7 @@ resources:
       source: nancyzhang-it.ContosoAir # name of the pipeline that produces an artifact
       trigger:
         branches:
-         include:
+          include:
            - master
 
 pool:
