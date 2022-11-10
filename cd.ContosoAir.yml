@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- none
+
+resources:
+ pipelines:
+   - pipeline: buildContosoAir # identifier for the resource used in pipeline resource variables
+     source: nz1.ContosoAir # name of the pipeline that produces an artifact
+     trigger:
+      branches:
+        include:
+          - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '06cbf045-e058-4f1e-9b5a-b1ccd3a3c99b'
+    definition: '40'
+    specificBuildWithTriggering: true
+    buildVersionToDownload: 'latest'
+    targetPath: '$(Pipeline.Workspace)'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'TailSpinServiceConnection-Tailspin-NZ1'
+    subscriptionId: '7986e8b3-be3a-4d32-8022-144715b5c945'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(resourcegroup)'
+    location: 'Canada Central'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(Pipeline.Workspace)/drop/Templates/azuredeploy.json'
+    csmParametersFile: '$(Pipeline.Workspace)/drop/Templates/azuredeploy.parameters.json'
+    overrideParameters: '-p_environment $(web_environment) -p_site_prefix $(web_prefix) -P_site_web_name $(web_site)'
+    deploymentMode: 'Incremental'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'TailSpinServiceConnection-Tailspin-NZ1'
+    appType: 'webApp'
+    WebAppName: '$(web_prefix)-$(web_site)-$(web_environment)'
+    packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
