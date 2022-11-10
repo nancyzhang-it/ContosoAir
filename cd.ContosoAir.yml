@@ -7,13 +7,13 @@ trigger:
 - none
 
 resources:
- pipelines:
-   - pipeline: buildContosoAir # identifier for the resource used in pipeline resource variables
-     source: nz1.ContosoAir # name of the pipeline that produces an artifact
-     trigger:
-      branches:
-        include:
-          - master
+  pipelines:
+    - pipeline: buildContosoAir # identifier for the resource used in pipeline resource variables
+      source: nz1.ContosoAir # name of the pipeline that produces an artifact
+      trigger:
+        branches:
+          include:
+            - master
 
 pool:
   vmImage: ubuntu-latest
